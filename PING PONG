@@ -1,0 +1,129 @@
+//variáveis da bolinha
+let xbolinha = 300;
+let ybolinha = 200;
+let diametro = 22;
+let raio= diametro / 2;
+
+//velocidade da bolinha
+let velocidadexbolinha = 6
+let velocidadeybolinha = 6
+
+function setup(){
+  createCanvas(600, 400);  
+}
+
+//variáveis da raquete
+let xraquete = 5;
+let yraquete = 150;
+let raquetecomprimento = 10;
+let raquetealtura = 90;
+
+let colidiu = false;
+
+//placar do jogo
+let meuspontos = 0;
+let pontosdooponente = 0;
+
+
+
+ 
+//variáveis do oponente
+let xraqueteoponente = 585;
+let yraqueteoponente = 150;
+let velocidadeyoponente;
+
+    function draw() {
+  background(0);
+  mostrabolinha ();
+  movimentabolinha ();
+  verificacolisãoborda ();
+  mostraraquete (xraquete, yraquete);
+  movimentaminharaquete ();
+  //verificacolisãoraquete ();
+  verificacolisãoraquete (xraquete, yraquete);
+  mostraraquete(xraqueteoponente, yraqueteoponente);
+  movimentaraqueteoponente();
+  verificacolisãoraquete (xraqueteoponente, yraqueteoponente);
+  incluiplacar ();
+  marcaponto ();
+ }
+
+function mostrabolinha()
+{circle (xbolinha, ybolinha, diametro);
+}
+
+  function movimentabolinha () {
+  xbolinha += velocidadexbolinha;
+  ybolinha += velocidadeybolinha;
+}
+
+function verificacolisãoborda (){
+   if (xbolinha + raio > width || xbolinha - raio < 0)
+  {velocidadexbolinha*= -1;
+  }
+  
+  if (ybolinha + raio >height || ybolinha - raio < 0){velocidadeybolinha *= -1;}
+}
+
+function mostraraquete (x, y) {
+  rect (x, y, raquetecomprimento, raquetealtura);
+}
+
+
+
+function movimentaminharaquete (){
+    if (keyIsDown(UP_ARROW)){
+      yraquete -= 10;
+    }
+  if (keyIsDown(DOWN_ARROW)){
+    yraquete += 10;
+}
+}
+
+function verificacolisãoraquete (){
+  if (xbolinha - raio < xraquete + raquetecomprimento && ybolinha - raio < yraquete + raquetealtura && ybolinha + raio > yraquete) {
+      velocidadexbolinha *= -1;
+  }
+}
+
+function verificacolisãoraquete (x, y){
+  colidiu =
+  collideRectCircle(x, y, raquetecomprimento, raquetealtura, xbolinha, ybolinha, raio);  
+  if (colidiu){
+    velocidadexbolinha *= -1;    
+  }  
+}  
+
+
+function  movimentaraqueteoponente(){
+   if (keyIsDown(87)){
+      yraqueteoponente -= 10;
+    }
+  if (keyIsDown(83)){
+    yraqueteoponente += 10;
+}
+}
+
+function incluiplacar (){
+  textAlign(CENTER);
+  stroke (255);
+  textSize (18);
+  fill (color (154, 205, 50));
+  rect (150, 10, 40, 20);
+  fill (255);
+  text (meuspontos, 170, 26);
+  fill (color (154, 205, 50));
+  rect (450, 10, 40, 20);
+  fill (255);
+  text (pontosdooponente, 470, 26);
+}
+
+function marcaponto (){ 
+  if (xbolinha > 590){
+    meuspontos += 1;
+  }
+  if (xbolinha < 10){
+    pontosdooponente += 1;  
+  }
+}
+
